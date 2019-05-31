@@ -2,13 +2,16 @@ package com.ems.movieknower.data
 
 import android.content.Context
 import android.databinding.DataBindingUtil
+import android.graphics.Color
+import android.graphics.PorterDuff
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.ems.movieknower.BR
 import com.ems.movieknower.R
 import com.ems.movieknower.databinding.MovieItemBinding
@@ -24,9 +27,20 @@ class MovieAdapter(val context: Context, val movies: List<Movie>) : RecyclerView
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie: Movie = movies.get(position)
+        setRatingCircleColor(holder.binding!!.movieRating, movie.rating)
         holder.binding?.setVariable(BR.movie, movie)
         holder.binding?.executePendingBindings()
         loadPoster(holder.binding!!.moviesPoster, movie.poster)
+    }
+
+    private fun setRatingCircleColor(view: TextView, rating: String) {
+        when (rating.toFloat()) {
+            in 0.0..5.0 -> view.background.setColorFilter(context.getColor(R.color.red), PorterDuff.Mode.MULTIPLY)
+            in 5.0..6.9 -> view.background.setColorFilter(context.getColor(R.color.yellow), PorterDuff.Mode.MULTIPLY)
+            in 7.0..8.4 -> view.background.setColorFilter(context.getColor(R.color.green), PorterDuff.Mode.MULTIPLY)
+            else -> view.background.setColorFilter(context.getColor(R.color.blue), PorterDuff.Mode.MULTIPLY)
+        }
+
     }
 
     override fun getItemCount(): Int = movies.size
