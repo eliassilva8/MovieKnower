@@ -4,18 +4,21 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
-import com.ems.movieknower.data.MovieAdapter
-import com.ems.movieknower.data.Results
 import com.ems.movieknower.databinding.MoviesListActivityBinding
-import com.ems.movieknower.services.ServiceBuilder
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
+import android.support.v7.widget.SearchView
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+
 
 class MoviesListActivity: AppCompatActivity() {
     val num_columns = 2
-    val themoviedbKey = BuildConfig.ApiKey
+    lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,37 +26,51 @@ class MoviesListActivity: AppCompatActivity() {
         setSupportActionBar(binding.moviesListToolbar)
 
         setUpRecyclerView(binding)
-        getMovies(binding)
+        getDataFromWebService(binding)
+
+        /*if (Intent.ACTION_SEARCH == intent.action) {
+            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
+                Toast.makeText(this, "working", Toast.LENGTH_LONG).show()
+            }
+        }*/
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        // Inflate menu to add items to action bar if it is present.
+        inflater.inflate(R.menu.menu_main, menu)
+        // Associate searchable configuration with the SearchView
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView = menu.findItem(R.id.menu_search).getActionView() as SearchView
+        searchView.setSearchableInfo(
+            searchManager.getSearchableInfo(componentName)
+        )
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Toast.makeText(this@MoviesListActivity, "working", Toast.LENGTH_LONG).show()
+                closeKeyboard()
+                return true
+            }
+        })
+
+        return true
+    }
+
+    private fun closeKeyboard() {
+        val view = this.currentFocus
+        if (view != null) {
+            val imm : InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     private fun setUpRecyclerView(binding: MoviesListActivityBinding) {
         val layoutManager = GridLayoutManager(binding.moviesGrid.context, num_columns, GridLayoutManager.VERTICAL, false)
         binding.moviesGrid.layoutManager = layoutManager
         binding.moviesGrid.setHasFixedSize(true)
-    }
-
-    /**
-     * Set a list of movies from the themoviedb api to the movies_list_activity
-     */
-    fun getMovies(binding: MoviesListActivityBinding) {
-        val movieService = ServiceBuilder().movieService()
-        val request = movieService.getMovies("popular", themoviedbKey)
-
-        request.enqueue(object : Callback<Results> {
-            override fun onFailure(call: Call<Results>, t: Throwable) {
-                Log.e("ViewModel", "Fail to get movies!")
-                //TODO Handle error getting response
-            }
-
-            override fun onResponse(call: Call<Results>, response: Response<Results>) {
-                if (response.isSuccessful) {
-                    val adapter = MovieAdapter(binding.moviesGrid.context, response.body()!!.moviesResult)
-                    binding.moviesGrid.adapter = adapter
-                    Log.i("ViewModel", "Success getting movies!")
-                } else {
-                    //TODO Handle error getting response
-                }
-            }
-        })
     }
 }

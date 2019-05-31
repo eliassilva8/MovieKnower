@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Movie Knower</string>
     <string name="movie_poster">movie_poster</string>
+    <string name="search_hint">Search movie</string>
+    <string name="action_settings">settings</string>
+    <string name="menu_search">search</string>
 </resources>
