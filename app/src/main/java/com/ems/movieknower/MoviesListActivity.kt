@@ -9,6 +9,7 @@ import android.app.SearchManager
 import android.content.Context
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
 import com.ems.movieknower.data.ApiCall
 
@@ -18,6 +19,7 @@ class MoviesListActivity: AppCompatActivity() {
     val popular_filter = "popular"
     lateinit var searchView: SearchView
     lateinit var binding: MoviesListActivityBinding
+    lateinit var apiCall: ApiCall
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,13 +27,14 @@ class MoviesListActivity: AppCompatActivity() {
         setSupportActionBar(binding.moviesListToolbar)
 
         setUpRecyclerView(binding)
-        val apiCall = ApiCall(binding)
+        apiCall = ApiCall(binding)
         apiCall.moviesSortedBy(popular_filter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_main, menu)
+
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView = menu.findItem(R.id.menu_search).getActionView() as SearchView
         searchView.setSearchableInfo(
@@ -42,6 +45,13 @@ class MoviesListActivity: AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_refresh -> apiCall.moviesSortedBy(popular_filter)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private fun searchMovie() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -50,7 +60,7 @@ class MoviesListActivity: AppCompatActivity() {
 
             override fun onQueryTextSubmit(query: String): Boolean {
                 closeKeyboard()
-                val apiCall = ApiCall(binding)
+                apiCall = ApiCall(binding)
                 apiCall.movieByName(query)
                 return true
             }
