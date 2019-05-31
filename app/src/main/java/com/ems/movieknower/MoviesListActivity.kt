@@ -7,57 +7,54 @@ import android.support.v7.widget.GridLayoutManager
 import com.ems.movieknower.databinding.MoviesListActivityBinding
 import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.support.v7.widget.SearchView
 import android.view.Menu
-import android.view.MenuItem
-import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
+import com.ems.movieknower.data.ApiCall
 
 
 class MoviesListActivity: AppCompatActivity() {
     val num_columns = 2
+    val popular_filter = "popular"
     lateinit var searchView: SearchView
+    lateinit var binding: MoviesListActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding: MoviesListActivityBinding = DataBindingUtil.setContentView(this, R.layout.movies_list_activity)
+        binding = DataBindingUtil.setContentView(this, R.layout.movies_list_activity)
         setSupportActionBar(binding.moviesListToolbar)
 
         setUpRecyclerView(binding)
-        getDataFromWebService(binding)
-
-        /*if (Intent.ACTION_SEARCH == intent.action) {
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                Toast.makeText(this, "working", Toast.LENGTH_LONG).show()
-            }
-        }*/
+        val apiCall = ApiCall(binding)
+        apiCall.moviesSortedBy(popular_filter)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        // Inflate menu to add items to action bar if it is present.
         inflater.inflate(R.menu.menu_main, menu)
-        // Associate searchable configuration with the SearchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         searchView = menu.findItem(R.id.menu_search).getActionView() as SearchView
         searchView.setSearchableInfo(
             searchManager.getSearchableInfo(componentName)
         )
+        searchView.maxWidth = Integer.MAX_VALUE
+        searchMovie()
+        return true
+    }
+
+    private fun searchMovie() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(newText: String?): Boolean {
                 return false
             }
 
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(this@MoviesListActivity, "working", Toast.LENGTH_LONG).show()
+            override fun onQueryTextSubmit(query: String): Boolean {
                 closeKeyboard()
+                val apiCall = ApiCall(binding)
+                apiCall.movieByName(query)
                 return true
             }
         })
-
-        return true
     }
 
     private fun closeKeyboard() {
