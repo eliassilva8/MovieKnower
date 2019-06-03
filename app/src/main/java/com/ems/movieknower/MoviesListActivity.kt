@@ -7,6 +7,8 @@ import android.support.v7.widget.GridLayoutManager
 import com.ems.movieknower.databinding.MoviesListActivityBinding
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
+import android.support.v4.app.Fragment
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
@@ -48,6 +50,10 @@ class MoviesListActivity: AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_refresh -> apiCall.moviesSortedBy(popular_filter)
+            R.id.menu_filter -> {
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -62,6 +68,7 @@ class MoviesListActivity: AppCompatActivity() {
                 closeKeyboard()
                 apiCall = ApiCall(binding)
                 apiCall.movieByName(query)
+                searchView.onActionViewCollapsed()
                 return true
             }
         })

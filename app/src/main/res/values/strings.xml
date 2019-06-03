@@ -5,4 +5,5 @@
     <string name="action_settings">settings</string>
     <string name="menu_search">search</string>
     <string name="menu_refresh">refresh</string>
+    <string name="menu_filter">filter</string>
 </resources>

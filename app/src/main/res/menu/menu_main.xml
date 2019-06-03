@@ -11,4 +11,10 @@
           android:title="@string/menu_refresh"
           appcompat:showAsAction="ifRoom"
           android:icon="@drawable/ic_refresh_black_24dp"/>
+
+    <item android:id="@+id/menu_filter"
+          android:title="@string/menu_filter"
+          appcompat:showAsAction="ifRoom"
+          android:icon="@drawable/ic_filter_list_black_24dp"/>
+
 </menu>
