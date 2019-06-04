@@ -1,16 +1,14 @@
 package com.ems.movieknower.data
 
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.graphics.Color
 import android.graphics.PorterDuff
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ems.movieknower.BR
 import com.ems.movieknower.R
