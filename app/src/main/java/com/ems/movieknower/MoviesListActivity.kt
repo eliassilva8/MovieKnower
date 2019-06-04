@@ -1,5 +1,6 @@
 package com.ems.movieknower
 
+import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -25,17 +26,15 @@ class MoviesListActivity: AppCompatActivity() {
     lateinit var searchView: SearchView
     lateinit var binding: MoviesListActivityBinding
     lateinit var apiCall: ApiCall
-    lateinit var prefsMap: HashMap<String, String>
+    lateinit var prefsMap: HashMap<String, String?>
     lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.movies_list_activity)
-        setSupportActionBar(binding.moviesListToolbar)
 
         setUpRecyclerView(binding)
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         refreshMoviesData()
     }
@@ -47,15 +46,15 @@ class MoviesListActivity: AppCompatActivity() {
 
     private fun refreshMoviesData() {
         val sortBy = sharedPreferences.getString(getString(R.string.preference_sort_by), "popularity.desc")
-        val rating = sharedPreferences.getString(getString(R.string.preference_rating), "")
+        val rating = sharedPreferences.getString(getString(R.string.preference_rating), "0")
         val year = sharedPreferences.getString(getString(R.string.preference_year), "")
         val voteCount = sharedPreferences.getString(getString(R.string.preference_vote_count), "1000")
 
-        prefsMap = hashMapOf<String, String>()
+        prefsMap = hashMapOf<String, String?>()
         prefsMap.put(apiKey, themoviedbKey)
         prefsMap.put("sort_by", sortBy)
         prefsMap.put("vote_average.gte", rating)
-        prefsMap.put("year", year)
+        prefsMap.put("primary_release_year", year)
         prefsMap.put("vote_count.gte", voteCount)
 
         apiCall = ApiCall(binding)
@@ -89,7 +88,7 @@ class MoviesListActivity: AppCompatActivity() {
 
     private fun restorePreferences() {
         sharedPreferences.edit().putString(getString(R.string.preference_sort_by), "popularity.desc").apply()
-        sharedPreferences.edit().putString(getString(R.string.preference_rating), "").apply()
+        sharedPreferences.edit().putString(getString(R.string.preference_rating), "0").apply()
         sharedPreferences.edit().putString(getString(R.string.preference_year), "").apply()
         sharedPreferences.edit().putString(getString(R.string.preference_vote_count), "1000").apply()
 
@@ -120,6 +119,7 @@ class MoviesListActivity: AppCompatActivity() {
         }
     }
 
+    @SuppressLint("WrongConstant")
     private fun setUpRecyclerView(binding: MoviesListActivityBinding) {
         val layoutManager = GridLayoutManager(
             binding.moviesGrid.context,

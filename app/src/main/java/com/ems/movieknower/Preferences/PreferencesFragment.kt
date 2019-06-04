@@ -15,7 +15,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         voteCountPref?.summaryProvider = Preference.SummaryProvider<EditTextPreference> { preference ->
             val text = preference.text
             if (TextUtils.isEmpty(text) || text.any { it.isLetter() }) {
-                "1000"
+                "All"
             } else {
                 text
             }

@@ -6,36 +6,34 @@
             android:title="Sort By:"
             android:defaultValue="popularity.desc"
             android:entries="@array/sort_by_entries"
-            android:entryValues="@array/sort_by_values" android:icon="@android:drawable/ic_menu_sort_by_size"
-            android:dialogIcon="@android:drawable/ic_menu_sort_by_size" android:layout_width="match_parent"
+            android:entryValues="@array/sort_by_values" android:icon="@drawable/ic_sort"
+            android:dialogIcon="@drawable/ic_sort" android:layout_width="match_parent"
             android:layout_height="wrap_content" android:isScrollContainer="false"/>
 
     <PreferenceCategory>
-
         <ListPreference
                 android:key="@string/preference_rating"
                 android:summary="%s"
                 android:title="Rating:"
-                android:defaultValue=""
+                android:defaultValue="0"
                 android:entries="@array/rating_entries"
-                android:entryValues="@array/rating_values" android:icon="@android:drawable/btn_star"
-                android:dialogIcon="@android:drawable/btn_star"
-        />
+                android:entryValues="@array/rating_values" android:icon="@drawable/ic_star_half"
+                android:dialogIcon="@drawable/ic_star_half"/>
 
         <EditTextPreference
                 android:key="@string/preference_vote_count"
                 android:defaultValue="1000"
-                android:summary="1000"
+                android:summary=""
                 android:title="Vote Count:"
-                app:useSimpleSummaryProvider="true" android:icon="@android:drawable/ic_menu_view"
-                android:dialogIcon="@android:drawable/ic_menu_view">
+                app:useSimpleSummaryProvider="true" android:icon="@drawable/ic_group"
+                android:dialogIcon="@drawable/ic_group">
         </EditTextPreference>
 
         <EditTextPreference
                 android:key="@string/preference_year"
                 android:summary="@string/all_time"
-                android:title="Year:" android:icon="@android:drawable/ic_menu_today"
-                android:dialogIcon="@android:drawable/ic_menu_today">
+                android:title="Year:" android:icon="@drawable/ic_date_range"
+                android:dialogIcon="@drawable/ic_date_range">
         </EditTextPreference>
     </PreferenceCategory>
 </PreferenceScreen>

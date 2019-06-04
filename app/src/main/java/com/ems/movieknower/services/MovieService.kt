@@ -16,5 +16,5 @@ interface MovieService {
      * Gets a list of movies sorted by the specified preferences
      */
     @GET("discover/movie")
-    fun getMoviePref(@QueryMap options: HashMap<String, String>): Call<Results>
+    fun getMoviePref(@QueryMap options: HashMap<String, String?>): Call<Results>
 }

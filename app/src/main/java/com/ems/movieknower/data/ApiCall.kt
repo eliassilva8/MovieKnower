@@ -30,7 +30,7 @@ class ApiCall (val binding: MoviesListActivityBinding) {
     /**
      * Gets a list of movies sorted by the preferences defined
      */
-    fun moviePref(prefs: HashMap<String, String>) {
+    fun moviePref(prefs: HashMap<String, String?>) {
         val request = movieService.getMoviePref(prefs)
 
         getDataFromWebService(request)
