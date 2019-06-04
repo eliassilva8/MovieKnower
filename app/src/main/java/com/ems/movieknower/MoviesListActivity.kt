@@ -1,19 +1,19 @@
 package com.ems.movieknower
 
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import com.ems.movieknower.databinding.MoviesListActivityBinding
-import android.app.SearchManager
-import android.content.Context
-import android.content.Intent
-import android.support.v4.app.Fragment
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import com.ems.movieknower.Preferences.PreferencesActivity
 import com.ems.movieknower.data.ApiCall
+import com.ems.movieknower.databinding.MoviesListActivityBinding
 
 
 class MoviesListActivity: AppCompatActivity() {
@@ -51,7 +51,7 @@ class MoviesListActivity: AppCompatActivity() {
         when (item?.itemId) {
             R.id.menu_refresh -> apiCall.moviesSortedBy(popular_filter)
             R.id.menu_filter -> {
-                val intent = Intent(this, SettingsActivity::class.java)
+                val intent = Intent(this, PreferencesActivity::class.java)
                 startActivity(intent)
             }
         }

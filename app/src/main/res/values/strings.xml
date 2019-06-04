@@ -6,4 +6,8 @@
     <string name="menu_search">search</string>
     <string name="menu_refresh">refresh</string>
     <string name="menu_filter">filter</string>
+    <string name="preference_sort_by">sort_by_preference</string>
+    <string name="preference_rating">rating_preference</string>
+    <string name="preference_year">year_preference</string>
+    <string name="all_time">All Time</string>
 </resources>

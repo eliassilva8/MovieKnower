@@ -1,14 +1,13 @@
-package com.ems.movieknower
+package com.ems.movieknower.Preferences
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 
-class SettingsActivity : AppCompatActivity() {
-
+class PreferencesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportFragmentManager.beginTransaction()
-            .replace(android.R.id.content, SettingsFragment())
+            .replace(android.R.id.content, PreferencesFragment())
             .commit()
     }
 }
