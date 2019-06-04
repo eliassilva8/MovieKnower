@@ -1,9 +1,10 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+>
     <ListPreference
             android:key="@string/preference_sort_by"
             android:summary="%s"
             android:title="Sort By:"
-            android:defaultValue="1"
+            android:defaultValue="popularity.desc"
             android:entries="@array/sort_by_entries"
             android:entryValues="@array/sort_by_values"/>
 
@@ -11,14 +12,20 @@
             android:key="@string/preference_rating"
             android:summary="%s"
             android:title="Rating:"
-            android:defaultValue="7"
+            android:defaultValue=""
             android:entries="@array/rating_entries"
             android:entryValues="@array/rating_values"/>
 
     <EditTextPreference
+            android:key="@string/preference_vote_count"
+            android:defaultValue="1000"
+            android:summary="1000"
+            android:title="Vote Count:">
+    </EditTextPreference>
+
+    <EditTextPreference
             android:key="@string/preference_year"
             android:summary="@string/all_time"
-            android:inputType="number"
             android:title="Year:">
     </EditTextPreference>
 </PreferenceScreen>

@@ -28,10 +28,11 @@ class ApiCall (val binding: MoviesListActivityBinding) {
     }
 
     /**
-     * Gets a list of movies sorted by the filter defined
+     * Gets a list of movies sorted by the preferences defined
      */
-    fun moviesSortedBy(filter: String) {
-        val request = movieService.getMoviesBy(filter, themoviedbKey)
+    fun moviePref(prefs: HashMap<String, String>) {
+        val request = movieService.getMoviePref(prefs)
+
         getDataFromWebService(request)
     }
 
