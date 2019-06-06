@@ -15,20 +15,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ems.movieknower.Preferences.PreferencesActivity
-import com.ems.movieknower.data.ApiCall
-import com.ems.movieknower.data.apiKey
-import com.ems.movieknower.data.themoviedbKey
+import com.ems.movieknower.data.*
 import com.ems.movieknower.databinding.MoviesListActivityBinding
 
 
-class MoviesListActivity: AppCompatActivity() {
+class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler {
     val num_columns = 2
     lateinit var searchView: SearchView
     lateinit var binding: MoviesListActivityBinding
     lateinit var apiCall: ApiCall
     lateinit var prefsMap: HashMap<String, String?>
     lateinit var sharedPreferences: SharedPreferences
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +39,14 @@ class MoviesListActivity: AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         refreshMoviesData()
+    }
+
+    override fun onClickMovie(movie: Movie) {
+        val intent = Intent(this, MovieDetailsActivity::class.java)
+        val bundle = Bundle()
+        bundle.putParcelable(getString(R.string.movie_intent), movie)
+        intent.putExtra(getString(R.string.movie_intent), bundle)
+        startActivity(intent)
     }
 
     private fun refreshMoviesData() {
