@@ -7,7 +7,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" android:id="@+id/coordinatorLayout">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -58,18 +58,30 @@
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent">
 
+                <ToggleButton
+                        android:layout_width="36dp" android:layout_height="36dp"
+                        android:id="@+id/favourite_btn"
+                        android:textOff=""
+                        android:textOn=""
+                        android:checked="@{movieView.movie.favorite}"
+                        android:background="@drawable/ic_favourite"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="16dp"/>
                 <TextView
                         android:id="@+id/movie_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="start"
                         android:textSize="@dimen/text_title"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorPrimary"
                         android:text="@{movieView.movie.title}"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:layout_marginStart="16dp" app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginTop="16dp"/>
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintTop_toTopOf="@id/favourite_btn"
+                        app:layout_constraintEnd_toStartOf="@+id/favourite_btn"
+                        app:layout_constraintBottom_toBottomOf="@+id/favourite_btn"/>
                 <TextView
                         android:id="@+id/movie_rating"
                         android:layout_width="wrap_content"
@@ -80,7 +92,7 @@
                         android:textSize="@dimen/text_body"
                         android:text="@{movieView.movie.rating}"
                         app:layout_constraintStart_toStartOf="@+id/movie_title"
-                        android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/movie_title"
+                        android:layout_marginTop="16dp" app:layout_constraintTop_toBottomOf="@+id/favourite_btn"
                         android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/guideline"/>
                 <TextView
                         android:layout_width="wrap_content"
@@ -105,7 +117,7 @@
                         android:text="@{movieView.movie.release}"
                         app:layout_constraintTop_toTopOf="@+id/movie_vote_count" android:layout_marginStart="8dp"
                         app:layout_constraintStart_toStartOf="@+id/guideline2"
-                        app:layout_constraintEnd_toEndOf="@+id/movie_title"/>
+                        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="16dp"/>
                 <androidx.constraintlayout.widget.Guideline
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
