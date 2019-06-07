@@ -1,7 +1,9 @@
 package com.ems.movieknower.data
 
 import android.util.Log
+import androidx.databinding.ViewDataBinding
 import com.ems.movieknower.BuildConfig
+import com.ems.movieknower.databinding.MovieDetailsBinding
 import com.ems.movieknower.databinding.MoviesListActivityBinding
 import com.ems.movieknower.services.ServiceBuilder
 import retrofit2.Call
@@ -12,7 +14,7 @@ val themoviedbKey = BuildConfig.ApiKey
 val apiKey = "api_key"
 val movieService = ServiceBuilder().movieService()
 
-class ApiCall (val binding: MoviesListActivityBinding) {
+class ApiCall(val binding: ViewDataBinding) {
 
     /**
      * Gets a list of movies by it name
@@ -37,6 +39,15 @@ class ApiCall (val binding: MoviesListActivityBinding) {
     }
 
     /**
+     * Gets a list of similar movies
+     */
+    fun similarMovies(movieId: String?) {
+        val request = movieService.getSimilarMovies(movieId, themoviedbKey)
+
+        getDataFromWebService(request)
+    }
+
+    /**
      * Set a list of movies from the themoviedb api to the movies_list_activity
      */
     private fun getDataFromWebService(request: Call<Results>) {
@@ -48,9 +59,14 @@ class ApiCall (val binding: MoviesListActivityBinding) {
 
             override fun onResponse(call: Call<Results>, response: Response<Results>) {
                 if (response.isSuccessful) {
-                    val adapter = MovieAdapter(binding.moviesGrid.context, response.body()!!.moviesResult)
-                    binding.moviesGrid.adapter = adapter
-                    Log.i("ViewModel", "Success getting movies!")
+                    if (binding is MoviesListActivityBinding) {
+                        val adapter = MoviesListAdapter(binding.moviesGrid.context, response.body()!!.moviesResult)
+                        binding.moviesGrid.adapter = adapter
+                    } else if (binding is MovieDetailsBinding) {
+                        val adapter =
+                            SimilarMoviesAdapter(binding.similarMoviesRv.context, response.body()!!.moviesResult)
+                        binding.similarMoviesRv.adapter = adapter
+                    }
                 } else {
                     //TODO Handle error getting response
                 }
