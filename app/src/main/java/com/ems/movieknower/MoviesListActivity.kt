@@ -36,11 +36,6 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler {
         refreshMoviesData()
     }
 
-    override fun onResume() {
-        super.onResume()
-        refreshMoviesData()
-    }
-
     override fun onClickMovie(movie: Movie) {
         val intent = Intent(this, MovieDetailsActivity::class.java)
         val bundle = Bundle()
