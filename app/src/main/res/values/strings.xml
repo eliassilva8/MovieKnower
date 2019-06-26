@@ -103,4 +103,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="similar_movies">Similar Movies</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
 </resources>

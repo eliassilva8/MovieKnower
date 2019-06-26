@@ -22,7 +22,6 @@ class MovieDetailsActivity : AppCompatActivity(), OnClickMovieHandler {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.movie_details)
 
-        setUpToolbar()
         setUpMovieView()
         setUpRecyclerView(binding)
         loadPoster(binding.toolbarMoviePoster, movie?.backdrop, image_backdrop_size)
@@ -61,13 +60,5 @@ class MovieDetailsActivity : AppCompatActivity(), OnClickMovieHandler {
         movie = bundle?.getParcelable(getString(R.string.movie_intent))
         binding.movieView = MovieViewModel()
         binding.movieView!!.movie = movie
-    }
-
-    private fun setUpToolbar() {
-        var toolbar = binding.toolbar
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = ""
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back_arrow)
     }
 }
