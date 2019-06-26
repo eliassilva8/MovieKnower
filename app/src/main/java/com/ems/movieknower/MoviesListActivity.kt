@@ -19,7 +19,8 @@ import com.ems.movieknower.data.*
 import com.ems.movieknower.databinding.MoviesListActivityBinding
 
 
-class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler {
+class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
+    SharedPreferences.OnSharedPreferenceChangeListener {
     val num_columns = 2
     lateinit var searchView: SearchView
     lateinit var binding: MoviesListActivityBinding
@@ -33,6 +34,11 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler {
 
         setUpRecyclerView(binding)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        refreshMoviesData()
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         refreshMoviesData()
     }
 
