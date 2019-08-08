@@ -12,8 +12,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".Preferences.PreferencesActivity"
-                android:label="Settings"
+                android:name=".preferences.PreferencesActivity"
+                android:label="@string/action_settings"
                 android:parentActivityName=".MoviesListActivity">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"

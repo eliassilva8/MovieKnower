@@ -5,18 +5,21 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ems.movieknower.data.ApiCall
-import com.ems.movieknower.data.Movie
-import com.ems.movieknower.data.MovieViewModel
-import com.ems.movieknower.data.OnClickMovieHandler
+import androidx.room.Room
+import com.ems.movieknower.data.*
+import com.ems.movieknower.database.FavouritesRoomDatabase
 import com.ems.movieknower.databinding.MovieDetailsBinding
+import com.ems.movieknower.utils.loadPoster
 
 class MovieDetailsActivity : AppCompatActivity(), OnClickMovieHandler {
+
     lateinit var binding: MovieDetailsBinding
     lateinit var apiCall: ApiCall
     var movie: Movie? = null
     private val image_backdrop_size = "w300/"
+    private lateinit var mFavouritesViewModel: FavouritesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,12 +28,26 @@ class MovieDetailsActivity : AppCompatActivity(), OnClickMovieHandler {
         setUpMovieView()
         setUpRecyclerView(binding)
         loadPoster(binding.toolbarMoviePoster, movie?.backdrop, image_backdrop_size)
+        mFavouritesViewModel = ViewModelProviders.of(this).get(FavouritesViewModel::class.java)
+
+        val db =
+            Room.databaseBuilder(applicationContext, FavouritesRoomDatabase::class.java, "favourite_movies_database")
+                .build()
+
+        //TODO Codigo para ir buscar todos os favoritos
+        /*mFavouritesViewModel.allFavourites.observe(this, object : Observer<List<Movie>> {
+            override fun onChanged(t: List<Movie>?) {
+
+            }
+        })*/
 
         binding.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                Toast.makeText(this, "Checked", Toast.LENGTH_LONG).show()
+                mFavouritesViewModel.insert(movie!!)
+                Toast.makeText(this, getString(R.string.added_to_favourites), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "Unchecked", Toast.LENGTH_LONG).show()
+                mFavouritesViewModel.delete(movie!!)
+                Toast.makeText(this, getString(R.string.deleted_from_favourites), Toast.LENGTH_SHORT).show()
             }
         }
     }

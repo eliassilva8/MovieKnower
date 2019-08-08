@@ -3,7 +3,7 @@
     <ListPreference
             android:key="@string/preference_sort_by"
             android:summary="%s"
-            android:title="Sort By:"
+            android:title="@string/preference_sort_by"
             android:defaultValue="popularity.desc"
             android:entries="@array/sort_by_entries"
             android:entryValues="@array/sort_by_values" android:icon="@drawable/ic_sort"
@@ -14,7 +14,7 @@
         <ListPreference
                 android:key="@string/preference_rating"
                 android:summary="%s"
-                android:title="Rating:"
+                android:title="@string/preference_rating"
                 android:defaultValue="0"
                 android:entries="@array/rating_entries"
                 android:entryValues="@array/rating_values" android:icon="@drawable/ic_star_half"
@@ -24,16 +24,15 @@
                 android:key="@string/preference_vote_count"
                 android:defaultValue="1000"
                 android:summary=""
-                android:title="Vote Count:"
+                android:title="@string/preference_vote_count"
                 app:useSimpleSummaryProvider="true" android:icon="@drawable/ic_group"
-                android:dialogIcon="@drawable/ic_group">
-        </EditTextPreference>
+                android:dialogIcon="@drawable/ic_group"/>
 
         <EditTextPreference
                 android:key="@string/preference_year"
                 android:summary="@string/all_time"
-                android:title="Year:" android:icon="@drawable/ic_date_range"
-                android:dialogIcon="@drawable/ic_date_range">
-        </EditTextPreference>
+                android:title="@string/preference_year"
+                android:icon="@drawable/ic_date_range"
+                android:dialogIcon="@drawable/ic_date_range"/>
     </PreferenceCategory>
 </PreferenceScreen>

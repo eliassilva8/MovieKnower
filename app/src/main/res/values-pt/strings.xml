@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="similar_movies">Filmes Relacionados</string>
+    <string name="search_hint">Procurar filme</string>
+    <string name="all_time">Desde sempre</string>
+    <string name="menu_search">procurar</string>
+    <string name="action_settings">Definições</string>
+    <string name="all">Todos</string>
+    <string name="preference_rating">Avaliação</string>
+    <string name="preference_sort_by">Filtrar por:</string>
+    <string name="preference_vote_count">Votações:</string>
+    <string name="preference_year">Ano:</string>
+    <string name="popular">Popular</string>
+    <string name="deleted_from_favourites">Removido dos favoritos!</string>
+    <string name="added_to_favourites">Adicionado aos favoritos!</string>
+</resources>

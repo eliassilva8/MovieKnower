@@ -1,8 +1,9 @@
-package com.ems.movieknower.Preferences
+package com.ems.movieknower.preferences
 
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.ems.movieknower.R
@@ -11,11 +12,14 @@ class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
 
+        val ratingPref: ListPreference? = findPreference(getString(R.string.preference_rating))
+        ratingPref?.title = ratingPref?.title.toString().plus(":")
+
         val voteCountPref: EditTextPreference? = findPreference(getString(R.string.preference_vote_count))
         voteCountPref?.summaryProvider = Preference.SummaryProvider<EditTextPreference> { preference ->
             val text = preference.text
             if (TextUtils.isEmpty(text) || text.any { it.isLetter() }) {
-                "All"
+                resources.getString(R.string.all)
             } else {
                 text
             }
@@ -25,7 +29,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
         yearPref?.summaryProvider = Preference.SummaryProvider<EditTextPreference> { preference ->
             val text = preference.text
             if (TextUtils.isEmpty(text) || text.any { it.isLetter() }) {
-                "All Time"
+                resources.getString(R.string.all_time)
             } else {
                 text
             }

@@ -14,9 +14,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ems.movieknower.Preferences.PreferencesActivity
 import com.ems.movieknower.data.*
 import com.ems.movieknower.databinding.MoviesListActivityBinding
+import com.ems.movieknower.preferences.PreferencesActivity
+import java.util.*
 
 
 class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
@@ -27,11 +28,13 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
     lateinit var apiCall: ApiCall
     lateinit var prefsMap: HashMap<String, String?>
     lateinit var sharedPreferences: SharedPreferences
+    lateinit var systemLanguage: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.movies_list_activity)
 
+        systemLanguage = Locale.getDefault().language
         setUpRecyclerView(binding)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
@@ -62,6 +65,7 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
         prefsMap.put("vote_average.gte", rating)
         prefsMap.put("primary_release_year", year)
         prefsMap.put("vote_count.gte", voteCount)
+        prefsMap.put("language", systemLanguage)
 
         apiCall = ApiCall(binding)
         apiCall.moviePref(prefsMap)

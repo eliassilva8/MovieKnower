@@ -1,4 +1,4 @@
-package com.ems.movieknower
+package com.ems.movieknower.utils
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

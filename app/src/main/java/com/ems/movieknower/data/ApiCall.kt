@@ -34,7 +34,6 @@ class ApiCall(val binding: ViewDataBinding) {
      */
     fun moviePref(prefs: HashMap<String, String?>) {
         val request = movieService.getMoviePref(prefs)
-
         getDataFromWebService(request)
     }
 

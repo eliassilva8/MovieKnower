@@ -12,7 +12,7 @@ import com.ems.movieknower.BR
 import com.ems.movieknower.R
 import com.ems.movieknower.databinding.MovieItemBinding
 import com.ems.movieknower.databinding.SimilarMovieItemBinding
-import com.ems.movieknower.loadPoster
+import com.ems.movieknower.utils.loadPoster
 
 class MoviesListAdapter(val context: Context, val movies: List<Movie>) :
     RecyclerView.Adapter<MoviesListAdapter.MovieViewHolder>() {

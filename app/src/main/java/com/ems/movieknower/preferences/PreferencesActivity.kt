@@ -1,4 +1,4 @@
-package com.ems.movieknower.Preferences
+package com.ems.movieknower.preferences
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

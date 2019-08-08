@@ -2,25 +2,57 @@ package com.ems.movieknower.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.NonNull
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Results(@SerializedName("results") val moviesResult: List<Movie>) : Serializable
 
+@Entity(tableName = "favourite_movies_table")
 data class Movie(
-    @SerializedName("id") val id: String?,
-    @SerializedName("poster_path") val poster: String?,
-    @SerializedName("backdrop_path") val backdrop: String?,
-    @SerializedName("title") val title: String?,
-    @SerializedName("release_date") val release: String?,
-    @SerializedName("vote_average") val rating: String?,
-    @SerializedName("vote_count") val voteCounting: String?,
-    @SerializedName("overview") val synopsis: String?,
+    @PrimaryKey
+    @NonNull
+    @SerializedName("id")
+    val id: String,
+
+    @ColumnInfo
+    @SerializedName("poster_path")
+    val poster: String?,
+
+    @ColumnInfo
+    @SerializedName("backdrop_path")
+    val backdrop: String?,
+
+    @ColumnInfo
+    @SerializedName("title")
+    val title: String?,
+
+    @ColumnInfo
+    @SerializedName("release_date")
+    val release: String?,
+
+    @ColumnInfo
+    @SerializedName("vote_average")
+    val rating: String?,
+
+    @ColumnInfo
+    @SerializedName("vote_count")
+    val voteCounting: String?,
+
+    @ColumnInfo
+    @SerializedName("overview")
+    val synopsis: String?,
+
+    @ColumnInfo
     val isFavorite: Boolean
+
 ) : Serializable, Parcelable {
 
     constructor(parcel: Parcel) : this(
-        id = parcel.readString(),
+        id = parcel.readString()!!,
         poster = parcel.readString(),
         backdrop = parcel.readString(),
         title = parcel.readString(),
