@@ -19,4 +19,7 @@
     <string name="popular">Popular</string>
     <string name="added_to_favourites">Added to favourites!</string>
     <string name="deleted_from_favourites">Deleted from favourites!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="title_activity_main" translatable="false">MainActivity</string>
 </resources>

@@ -3,8 +3,8 @@ package com.ems.movieknower.data
 import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.ems.movieknower.BuildConfig
-import com.ems.movieknower.databinding.MovieDetailsBinding
-import com.ems.movieknower.databinding.MoviesListActivityBinding
+import com.ems.movieknower.databinding.FragmentMovieDetailsBinding
+import com.ems.movieknower.databinding.FragmentMoviesListBinding
 import com.ems.movieknower.services.ServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,7 +20,7 @@ class ApiCall(val binding: ViewDataBinding) {
      * Gets a list of movies by it name
      */
     fun movieByName(movieName: String) {
-        var options = hashMapOf<String, String>()
+        val options = hashMapOf<String, String>()
         options.put("query", movieName)
         options.put(apiKey, themoviedbKey)
 
@@ -47,7 +47,7 @@ class ApiCall(val binding: ViewDataBinding) {
     }
 
     /**
-     * Set a list of movies from the themoviedb api to the movies_list_activity
+     * Set a list of movies from the themoviedb api to the fragment_movies_list
      */
     private fun getDataFromWebService(request: Call<Results>) {
         request.enqueue(object : Callback<Results> {
@@ -58,10 +58,10 @@ class ApiCall(val binding: ViewDataBinding) {
 
             override fun onResponse(call: Call<Results>, response: Response<Results>) {
                 if (response.isSuccessful) {
-                    if (binding is MoviesListActivityBinding) {
+                    if (binding is FragmentMoviesListBinding) {
                         val adapter = MoviesListAdapter(binding.moviesGrid.context, response.body()!!.moviesResult)
                         binding.moviesGrid.adapter = adapter
-                    } else if (binding is MovieDetailsBinding) {
+                    } else if (binding is FragmentMovieDetailsBinding) {
                         val adapter =
                             SimilarMoviesAdapter(binding.similarMoviesRv.context, response.body()!!.moviesResult)
                         binding.similarMoviesRv.adapter = adapter

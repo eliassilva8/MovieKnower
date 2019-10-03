@@ -10,8 +10,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:id="@+id/cardView"
-            android:onClick="@{() -> onClickMovie.onClickMovie(movie)}">
+            android:id="@+id/card_view_movies_list"
+            android:onClick="@{(view) -> onClickMovie.onClickMovie(movie, view)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

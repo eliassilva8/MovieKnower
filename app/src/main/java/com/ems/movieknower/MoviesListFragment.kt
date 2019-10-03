@@ -1,42 +1,48 @@
 package com.ems.movieknower
 
+
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
-import com.ems.movieknower.data.*
-import com.ems.movieknower.databinding.MoviesListActivityBinding
+import com.ems.movieknower.data.ApiCall
+import com.ems.movieknower.data.apiKey
+import com.ems.movieknower.data.themoviedbKey
+import com.ems.movieknower.databinding.FragmentMoviesListBinding
 import com.ems.movieknower.preferences.PreferencesActivity
 import java.util.*
 
-
-class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
     val num_columns = 2
     lateinit var searchView: SearchView
-    lateinit var binding: MoviesListActivityBinding
+    lateinit var binding: FragmentMoviesListBinding
     lateinit var apiCall: ApiCall
     lateinit var prefsMap: HashMap<String, String?>
     lateinit var sharedPreferences: SharedPreferences
     lateinit var systemLanguage: String
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.movies_list_activity)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_list, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         systemLanguage = Locale.getDefault().language
         setUpRecyclerView(binding)
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
         refreshMoviesData()
     }
@@ -45,19 +51,13 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
         refreshMoviesData()
     }
 
-    override fun onClickMovie(movie: Movie) {
-        val intent = Intent(this, MovieDetailsActivity::class.java)
-        val bundle = Bundle()
-        bundle.putParcelable(getString(R.string.movie_intent), movie)
-        intent.putExtra(getString(R.string.movie_intent), bundle)
-        startActivity(intent)
-    }
-
     private fun refreshMoviesData() {
-        val sortBy = sharedPreferences.getString(getString(R.string.preference_sort_by), "popularity.desc")
+        val sortBy =
+            sharedPreferences.getString(getString(R.string.preference_sort_by), "popularity.desc")
         val rating = sharedPreferences.getString(getString(R.string.preference_rating), "0")
         val year = sharedPreferences.getString(getString(R.string.preference_year), "")
-        val voteCount = sharedPreferences.getString(getString(R.string.preference_vote_count), "1000")
+        val voteCount =
+            sharedPreferences.getString(getString(R.string.preference_vote_count), "1000")
 
         prefsMap = hashMapOf<String, String?>()
         prefsMap.put(apiKey, themoviedbKey)
@@ -71,25 +71,23 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
         apiCall.moviePref(prefsMap)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_main, menu)
 
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView = menu.findItem(R.id.menu_search).getActionView() as SearchView
+        val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        searchView = menu.findItem(R.id.menu_search).actionView as SearchView
         searchView.setSearchableInfo(
-            searchManager.getSearchableInfo(componentName)
+            searchManager.getSearchableInfo(activity!!.componentName)
         )
         searchView.maxWidth = Integer.MAX_VALUE
         searchMovie()
-        return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_restore_preferences -> restorePreferences()
             R.id.menu_filter -> {
-                val intent = Intent(this, PreferencesActivity::class.java)
+                val intent = Intent(activity, PreferencesActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -97,10 +95,12 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
     }
 
     private fun restorePreferences() {
-        sharedPreferences.edit().putString(getString(R.string.preference_sort_by), "popularity.desc").apply()
+        sharedPreferences.edit()
+            .putString(getString(R.string.preference_sort_by), "popularity.desc").apply()
         sharedPreferences.edit().putString(getString(R.string.preference_rating), "0").apply()
         sharedPreferences.edit().putString(getString(R.string.preference_year), "").apply()
-        sharedPreferences.edit().putString(getString(R.string.preference_vote_count), "1000").apply()
+        sharedPreferences.edit().putString(getString(R.string.preference_vote_count), "1000")
+            .apply()
 
         refreshMoviesData()
     }
@@ -122,15 +122,16 @@ class MoviesListActivity : AppCompatActivity(), OnClickMovieHandler,
     }
 
     private fun closeKeyboard() {
-        val view = this.currentFocus
+        val view = activity!!.currentFocus
         if (view != null) {
-            val imm : InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            val imm: InputMethodManager =
+                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 
     @SuppressLint("WrongConstant")
-    private fun setUpRecyclerView(binding: MoviesListActivityBinding) {
+    private fun setUpRecyclerView(binding: FragmentMoviesListBinding) {
         val layoutManager = GridLayoutManager(
             binding.moviesGrid.context,
             num_columns,
