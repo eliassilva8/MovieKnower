@@ -1,4 +1,4 @@
-package com.ems.movieknower.preferences
+package com.ems.movieknower
 
 import android.os.Bundle
 import android.text.TextUtils
@@ -6,11 +6,13 @@ import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.ems.movieknower.R
 
 class PreferencesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+
+        val mainActivity = activity as MainActivity
+        mainActivity.supportActionBar!!.title = getString(R.string.action_settings)
 
         val ratingPref: ListPreference? = findPreference(getString(R.string.preference_rating))
         ratingPref?.title = ratingPref?.title.toString().plus(":")

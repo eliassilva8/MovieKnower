@@ -46,13 +46,15 @@ class MovieDetailsFragment : Fragment() {
         loadPoster(binding.toolbarMoviePoster, movie?.backdrop, image_backdrop_size)
         mFavouritesViewModel = ViewModelProvider(this).get(FavouritesViewModel::class.java)
 
+        val mainActivity = activity as MainActivity
+        mainActivity.supportActionBar!!.title = movie!!.title
+
         val db =
             Room.databaseBuilder(
                 activity!!.applicationContext,
                 FavouritesRoomDatabase::class.java,
                 "favourite_movies_database"
-            )
-                .build()
+            ).build()
 
         //TODO Codigo para ir buscar todos os favoritos
         /*mFavouritesViewModel.allFavourites.observe(this, object : Observer<List<Movie>> {
@@ -95,11 +97,6 @@ class MovieDetailsFragment : Fragment() {
     private fun setUpMovieView() {
         val args: MovieDetailsFragmentArgs by navArgs()
         movie = args.StringMovieIntent
-
-        //movie = fragment.arguments!!.getParcelable(getString(R.string.movie_intent))
-
-        //val bundle = activity!!.intent.extras?.getBundle(getString(R.string.movie_intent))
-        //movie = bundle?.getParcelable(getString(R.string.movie_intent))
         binding.movieView = MovieViewModel()
         binding.movieView!!.movie = movie
     }

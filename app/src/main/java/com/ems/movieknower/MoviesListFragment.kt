@@ -4,7 +4,6 @@ package com.ems.movieknower
 import android.annotation.SuppressLint
 import android.app.SearchManager
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
@@ -12,13 +11,13 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ems.movieknower.data.ApiCall
 import com.ems.movieknower.data.apiKey
 import com.ems.movieknower.data.themoviedbKey
 import com.ems.movieknower.databinding.FragmentMoviesListBinding
-import com.ems.movieknower.preferences.PreferencesActivity
 import java.util.*
 
 class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -36,6 +35,7 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_list, container, false)
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -45,6 +45,18 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
         refreshMoviesData()
+
+        val mainActivity = activity as MainActivity
+        val sortBy = sharedPreferences.getString(
+            getString(R.string.preference_sort_by),
+            getString(R.string.populatiry_filter)
+        )
+        if (sortBy == getString(R.string.populatiry_filter)) {
+            mainActivity.supportActionBar!!.title = getString(R.string.most_popular_title)
+        } else {
+            mainActivity.supportActionBar!!.title = getString(R.string.best_rating_title)
+        }
+
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -53,7 +65,10 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
 
     private fun refreshMoviesData() {
         val sortBy =
-            sharedPreferences.getString(getString(R.string.preference_sort_by), "popularity.desc")
+            sharedPreferences.getString(
+                getString(R.string.preference_sort_by),
+                getString(R.string.populatiry_filter)
+            )
         val rating = sharedPreferences.getString(getString(R.string.preference_rating), "0")
         val year = sharedPreferences.getString(getString(R.string.preference_year), "")
         val voteCount =
@@ -87,8 +102,7 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
         when (item.itemId) {
             R.id.menu_restore_preferences -> restorePreferences()
             R.id.menu_filter -> {
-                val intent = Intent(activity, PreferencesActivity::class.java)
-                startActivity(intent)
+                findNavController().navigate(R.id.action_movieListFragment_to_preferencesFragment)
             }
         }
         return super.onOptionsItemSelected(item)

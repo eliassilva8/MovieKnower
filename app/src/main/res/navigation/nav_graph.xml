@@ -12,6 +12,9 @@
         <action
                 android:id="@+id/action_movieListFragment_to_movieDetailsFragment"
                 app:destination="@id/movieDetailsFragment" />
+        <action
+                android:id="@+id/action_movieListFragment_to_preferencesFragment"
+                app:destination="@id/preferencesFragment" />
     </fragment>
     <fragment
             android:id="@+id/movieDetailsFragment"
@@ -26,4 +29,8 @@
                 app:popUpTo="@+id/movieListFragment"
                 app:popUpToInclusive="false" />
     </fragment>
+    <fragment
+            android:id="@+id/preferencesFragment"
+            android:name="com.ems.movieknower.PreferencesFragment"
+            android:label="PreferencesFragment" />
 </navigation>
