@@ -22,11 +22,16 @@ class MovieViewModel : BaseObservable() {
 class FavouritesViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: FavouritesRepository
     val allFavourites: LiveData<List<Movie>>
+    var currentMovie: Movie? = null
 
     init {
         val favouritesDao = FavouritesRoomDatabase.getDatabase(application)?.favouritesDao()
         repository = FavouritesRepository(favouritesDao!!)
         allFavourites = repository.allFavouriteMovies
+    }
+
+    fun findMovie(id: String) = viewModelScope.launch(Dispatchers.IO) {
+        currentMovie = repository.findMovie(id)
     }
 
     fun insert(movie: Movie) = viewModelScope.launch(Dispatchers.IO) {

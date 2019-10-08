@@ -44,10 +44,7 @@ data class Movie(
 
     @ColumnInfo
     @SerializedName("overview")
-    val synopsis: String?,
-
-    @ColumnInfo
-    val isFavorite: Boolean
+    val synopsis: String?
 
 ) : Serializable, Parcelable {
 
@@ -59,8 +56,7 @@ data class Movie(
         release = parcel.readString(),
         rating = parcel.readString(),
         voteCounting = parcel.readString(),
-        synopsis = parcel.readString(),
-        isFavorite = parcel.readByte() != 0.toByte()
+        synopsis = parcel.readString()
     )
 
     override fun writeToParcel(dest: Parcel?, flags: Int) {
@@ -72,7 +68,6 @@ data class Movie(
         dest?.writeString(rating)
         dest?.writeString(voteCounting)
         dest?.writeString(synopsis)
-        dest?.writeByte((if (isFavorite) 1 else 0).toByte())
     }
 
     override fun describeContents(): Int = 0

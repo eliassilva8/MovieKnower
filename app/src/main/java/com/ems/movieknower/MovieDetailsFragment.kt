@@ -2,9 +2,7 @@ package com.ems.movieknower
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -29,6 +27,7 @@ class MovieDetailsFragment : Fragment() {
     var movie: Movie? = null
     private val image_backdrop_size = "w300/"
     private lateinit var mFavouritesViewModel: FavouritesViewModel
+    var isFavorite = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +36,15 @@ class MovieDetailsFragment : Fragment() {
     ): View? {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false)
+
+        val args: MovieDetailsFragmentArgs by navArgs()
+        movie = args.StringMovieIntent
+
+        mFavouritesViewModel = ViewModelProvider(this).get(FavouritesViewModel::class.java)
+        mFavouritesViewModel.findMovie(movie!!.id)
+        isFavorite = mFavouritesViewModel.currentMovie != null
+
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -44,7 +52,6 @@ class MovieDetailsFragment : Fragment() {
         setUpMovieView()
         setUpRecyclerView(binding)
         loadPoster(binding.toolbarMoviePoster, movie?.backdrop, image_backdrop_size)
-        mFavouritesViewModel = ViewModelProvider(this).get(FavouritesViewModel::class.java)
 
         val mainActivity = activity as MainActivity
         mainActivity.supportActionBar!!.title = movie!!.title
@@ -62,24 +69,46 @@ class MovieDetailsFragment : Fragment() {
 
             }
         })*/
+    }
 
-        binding.favouriteBtn.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_details, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        if (isFavorite) {
+            menu.findItem(R.id.menu_favorite_on).isVisible = true
+            menu.findItem(R.id.menu_favorite_off).isVisible = false
+        } else {
+            menu.findItem(R.id.menu_favorite_off).isVisible = true
+            menu.findItem(R.id.menu_favorite_on).isVisible = false
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu_favorite_off -> {
+                isFavorite = true
                 mFavouritesViewModel.insert(movie!!)
                 Toast.makeText(
                     activity,
                     getString(R.string.added_to_favourites),
                     Toast.LENGTH_SHORT
                 ).show()
-            } else {
+                activity!!.invalidateOptionsMenu()
+            }
+            R.id.menu_favorite_on -> {
+                isFavorite = false
                 mFavouritesViewModel.delete(movie!!)
                 Toast.makeText(
                     activity,
                     getString(R.string.deleted_from_favourites),
                     Toast.LENGTH_SHORT
                 ).show()
+                activity!!.invalidateOptionsMenu()
             }
         }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setUpRecyclerView(binding: FragmentMovieDetailsBinding) {
@@ -95,8 +124,8 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun setUpMovieView() {
-        val args: MovieDetailsFragmentArgs by navArgs()
-        movie = args.StringMovieIntent
+        //val args: MovieDetailsFragmentArgs by navArgs()
+        //movie = args.StringMovieIntent
         binding.movieView = MovieViewModel()
         binding.movieView!!.movie = movie
     }

@@ -37,36 +37,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent">
 
-                <ToggleButton
-                        android:id="@+id/favourite_btn"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@drawable/ic_favourite"
-                        android:checked="@{movieView.movie.favorite}"
-                        android:textOff=""
-                        android:textOn=""
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                        android:id="@+id/movie_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginEnd="8dp"
-                        android:gravity="start"
-                        android:text="@{movieView.movie.title}"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_title"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        app:layout_constraintBottom_toBottomOf="@+id/favourite_btn"
-                        app:layout_constraintEnd_toStartOf="@+id/favourite_btn"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/favourite_btn" />
-
                 <TextView
                         android:id="@+id/movie_rating"
                         android:layout_width="wrap_content"
@@ -79,8 +49,8 @@
                         android:text="@{movieView.movie.rating}"
                         android:textSize="@dimen/text_body"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
-                        app:layout_constraintStart_toStartOf="@+id/movie_title"
-                        app:layout_constraintTop_toBottomOf="@+id/favourite_btn" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                         android:id="@+id/movie_vote_count"

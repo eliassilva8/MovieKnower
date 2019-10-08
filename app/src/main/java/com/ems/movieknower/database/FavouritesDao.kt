@@ -12,9 +12,13 @@ interface FavouritesDao {
     @Query("SELECT * from favourite_movies_table")
     fun getAllFavouriteMovies(): LiveData<List<Movie>>
 
+    @Query("SELECT * from favourite_movies_table WHERE id = :movieId")
+    fun findMovie(movieId: String): Movie?
+
     @Insert
     fun insert(movie: Movie)
 
     @Delete
     fun delete(movie: Movie)
+
 }

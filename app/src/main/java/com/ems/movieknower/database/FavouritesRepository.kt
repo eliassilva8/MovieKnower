@@ -8,6 +8,11 @@ class FavouritesRepository(private val favouritesDao: FavouritesDao) {
     val allFavouriteMovies: LiveData<List<Movie>> = favouritesDao.getAllFavouriteMovies()
 
     @WorkerThread
+    suspend fun findMovie(id: String): Movie? {
+        return favouritesDao.findMovie(id)
+    }
+
+    @WorkerThread
     suspend fun insert(movie: Movie) {
         favouritesDao.insert(movie)
     }
