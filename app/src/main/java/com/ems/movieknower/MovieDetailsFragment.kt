@@ -17,6 +17,7 @@ import com.ems.movieknower.data.MovieViewModel
 import com.ems.movieknower.database.FavouritesRoomDatabase
 import com.ems.movieknower.databinding.FragmentMovieDetailsBinding
 import com.ems.movieknower.utils.loadPoster
+import kotlinx.android.synthetic.main.main_activity.*
 
 /**
  * A simple [Fragment] subclass.
@@ -55,6 +56,7 @@ class MovieDetailsFragment : Fragment() {
 
         val mainActivity = activity as MainActivity
         mainActivity.supportActionBar!!.title = movie!!.title
+        mainActivity.bottom_nav.visibility = View.GONE
 
         val db =
             Room.databaseBuilder(
@@ -92,7 +94,7 @@ class MovieDetailsFragment : Fragment() {
                 mFavouritesViewModel.insert(movie!!)
                 Toast.makeText(
                     activity,
-                    getString(R.string.added_to_favourites),
+                    getString(R.string.added_to_favorites),
                     Toast.LENGTH_SHORT
                 ).show()
                 activity!!.invalidateOptionsMenu()
@@ -102,7 +104,7 @@ class MovieDetailsFragment : Fragment() {
                 mFavouritesViewModel.delete(movie!!)
                 Toast.makeText(
                     activity,
-                    getString(R.string.deleted_from_favourites),
+                    getString(R.string.deleted_from_favorites),
                     Toast.LENGTH_SHORT
                 ).show()
                 activity!!.invalidateOptionsMenu()

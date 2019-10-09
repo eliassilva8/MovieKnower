@@ -17,9 +17,12 @@
     <string name="title_activity_scrolling" translatable="false">ScrollingActivity</string>
     <string name="all">All</string>
     <string name="popular">Popular</string>
-    <string name="added_to_favourites">Added to favourites!</string>
-    <string name="deleted_from_favourites">Deleted from favourites!</string>
+    <string name="added_to_favorites">Added to favorites!</string>
+    <string name="deleted_from_favorites">Deleted from favorites!</string>
     <string name="populatiry_filter" translatable="false">popularity.desc</string>
     <string name="most_popular_title">Most popular</string>
     <string name="best_rating_title">Best rating</string>
+    <string name="news">News</string>
+    <string name="home">Home</string>
+    <string name="favorites">Favorites</string>
 </resources>

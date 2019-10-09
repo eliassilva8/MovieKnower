@@ -11,8 +11,11 @@
     <string name="preference_vote_count">Votações:</string>
     <string name="preference_year">Ano:</string>
     <string name="popular">Popular</string>
-    <string name="deleted_from_favourites">Removido dos favoritos!</string>
-    <string name="added_to_favourites">Adicionado aos favoritos!</string>
+    <string name="deleted_from_favorites">Removido dos favoritos!</string>
+    <string name="added_to_favorites">Adicionado aos favoritos!</string>
     <string name="most_popular_title">Mais populares</string>
     <string name="best_rating_title">Melhor avaliação</string>
+    <string name="news">Notícias</string>
+    <string name="home">Página Inicial</string>
+    <string name="favorites">Favoritos</string>
 </resources>

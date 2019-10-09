@@ -12,13 +12,16 @@ import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ems.movieknower.data.ApiCall
 import com.ems.movieknower.data.apiKey
 import com.ems.movieknower.data.themoviedbKey
 import com.ems.movieknower.databinding.FragmentMoviesListBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.main_activity.*
 import java.util.*
 
 class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -29,6 +32,7 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
     lateinit var prefsMap: HashMap<String, String?>
     lateinit var sharedPreferences: SharedPreferences
     lateinit var systemLanguage: String
+    lateinit var mainActivity: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,17 +41,22 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_list, container, false)
         setHasOptionsMenu(true)
+        systemLanguage = Locale.getDefault().language
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        systemLanguage = Locale.getDefault().language
-        setUpRecyclerView(binding)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
+        mainActivity = activity as MainActivity
+        setUpRecyclerView(binding)
         refreshMoviesData()
 
-        val mainActivity = activity as MainActivity
+        mainActivity.findViewById<BottomNavigationView>(R.id.bottom_nav)
+            .setupWithNavController(mainActivity.navController)
+        mainActivity.bottom_nav.visibility = View.VISIBLE
+
         val sortBy = sharedPreferences.getString(
             getString(R.string.preference_sort_by),
             getString(R.string.populatiry_filter)
@@ -103,9 +112,12 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
         when (item.itemId) {
             R.id.menu_restore_preferences -> restorePreferences()
             R.id.menu_filter -> {
-                findNavController().navigate(R.id.action_movieListFragment_to_preferencesFragment)
+                mainActivity.navController.navigate(R.id.action_movieListFragment_to_preferencesFragment)
             }
         }
+        item.onNavDestinationSelected(mainActivity.navController) || super.onOptionsItemSelected(
+            item
+        )
         return super.onOptionsItemSelected(item)
     }
 

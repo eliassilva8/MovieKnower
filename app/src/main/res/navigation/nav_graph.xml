@@ -33,4 +33,8 @@
             android:id="@+id/preferencesFragment"
             android:name="com.ems.movieknower.PreferencesFragment"
             android:label="PreferencesFragment" />
+    <fragment
+            android:id="@+id/newsFragment"
+            android:name="com.ems.movieknower.NewsFragment"
+            android:label="NewsFragment" />
 </navigation>
