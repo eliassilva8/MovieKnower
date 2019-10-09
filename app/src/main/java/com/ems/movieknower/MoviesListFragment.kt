@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -129,10 +130,14 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
                 closeKeyboard()
                 apiCall = ApiCall(binding)
                 apiCall.movieByName(query)
-                searchView.onActionViewCollapsed()
                 return true
             }
         })
+
+        searchView.findViewById<ImageView>(R.id.search_close_btn).setOnClickListener {
+            searchView.onActionViewCollapsed()
+            refreshMoviesData()
+        }
     }
 
     private fun closeKeyboard() {
