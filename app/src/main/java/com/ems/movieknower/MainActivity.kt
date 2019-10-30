@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.ems.movieknower.data.Movie
 import com.ems.movieknower.data.OnClickMovieHandler
+import com.ems.movieknower.movieDetails.MovieDetailsFragmentDirections
 
 class MainActivity : AppCompatActivity(), OnClickMovieHandler {
     lateinit var navController: NavController
@@ -16,8 +17,6 @@ class MainActivity : AppCompatActivity(), OnClickMovieHandler {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
         navController = this.findNavController(R.id.nav_host_fragment)
-        //findViewById<BottomNavigationView>(R.id.bottom_nav)
-        //.setupWithNavController(navController)
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
 
@@ -25,7 +24,7 @@ class MainActivity : AppCompatActivity(), OnClickMovieHandler {
         when (view.id) {
             R.id.card_view_movies_list -> {
                 val directions =
-                    MoviesListFragmentDirections.actionMovieListFragmentToMovieDetailsFragment(movie)
+                    AppNavigationDirections.actionGlobalMovieDetailsFragment(movie)
                 findNavController(view.id).navigate(directions)
             }
             R.id.card_view_movie_details -> {
@@ -39,13 +38,4 @@ class MainActivity : AppCompatActivity(), OnClickMovieHandler {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()
     }
-
-    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_bottom_nav, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return item.onNavDestinationSelected(navController) || super.onOptionsItemSelected(item)
-    }*/
 }

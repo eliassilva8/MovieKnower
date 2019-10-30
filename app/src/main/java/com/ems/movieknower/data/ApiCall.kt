@@ -5,6 +5,8 @@ import androidx.databinding.ViewDataBinding
 import com.ems.movieknower.BuildConfig
 import com.ems.movieknower.databinding.FragmentMovieDetailsBinding
 import com.ems.movieknower.databinding.FragmentMoviesListBinding
+import com.ems.movieknower.movieDetails.SimilarMoviesAdapter
+import com.ems.movieknower.moviesList.MoviesListAdapter
 import com.ems.movieknower.services.ServiceBuilder
 import retrofit2.Call
 import retrofit2.Callback
@@ -59,7 +61,8 @@ class ApiCall(val binding: ViewDataBinding) {
             override fun onResponse(call: Call<Results>, response: Response<Results>) {
                 if (response.isSuccessful) {
                     if (binding is FragmentMoviesListBinding) {
-                        val adapter = MoviesListAdapter(binding.moviesGrid.context, response.body()!!.moviesResult)
+                        val adapter = MoviesListAdapter(binding.moviesGrid.context)
+                        adapter.setMovies(response.body()!!.moviesResult)
                         binding.moviesGrid.adapter = adapter
                     } else if (binding is FragmentMovieDetailsBinding) {
                         val adapter =

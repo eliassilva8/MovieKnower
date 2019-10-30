@@ -1,4 +1,4 @@
-package com.ems.movieknower
+package com.ems.movieknower.movieDetails
 
 
 import android.os.Bundle
@@ -6,16 +6,20 @@ import android.view.*
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.ems.movieknower.MainActivity
+import com.ems.movieknower.R
 import com.ems.movieknower.data.ApiCall
-import com.ems.movieknower.data.FavouritesViewModel
 import com.ems.movieknower.data.Movie
-import com.ems.movieknower.data.MovieViewModel
-import com.ems.movieknower.database.FavouritesRoomDatabase
+import com.ems.movieknower.data.MoviesListViewModel
+import com.ems.movieknower.database.FavoritesDatabase
 import com.ems.movieknower.databinding.FragmentMovieDetailsBinding
+import com.ems.movieknower.favoriteMovies.FavoriteMoviesViewModelFactory
+import com.ems.movieknower.favoriteMovies.FavoritesViewModel
 import com.ems.movieknower.utils.loadPoster
 import kotlinx.android.synthetic.main.main_activity.*
 
@@ -25,10 +29,10 @@ import kotlinx.android.synthetic.main.main_activity.*
 class MovieDetailsFragment : Fragment() {
     lateinit var binding: FragmentMovieDetailsBinding
     lateinit var apiCall: ApiCall
-    var movie: Movie? = null
+    lateinit var movie: Movie
     private val image_backdrop_size = "w300/"
-    private lateinit var mFavouritesViewModel: FavouritesViewModel
     var isFavorite = false
+    lateinit var mFavoritesViewModel: FavoritesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,14 +40,22 @@ class MovieDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_movie_details, container, false)
+            DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_movie_details, container, false
+            )
 
         val args: MovieDetailsFragmentArgs by navArgs()
         movie = args.StringMovieIntent
 
-        mFavouritesViewModel = ViewModelProvider(this).get(FavouritesViewModel::class.java)
-        mFavouritesViewModel.findMovie(movie!!.id)
-        isFavorite = mFavouritesViewModel.currentMovie != null
+        val application = requireNotNull(this.activity).application
+        val dataSource = FavoritesDatabase.getDatabase(application).favouritesDao
+        val viewModelFactory = FavoriteMoviesViewModelFactory(dataSource, application)
+        mFavoritesViewModel =
+            ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
+
+        binding.favoritesViewModel = mFavoritesViewModel
+        binding.lifecycleOwner = this
 
         setHasOptionsMenu(true)
         return binding.root
@@ -52,46 +64,39 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setUpMovieView()
         setUpRecyclerView(binding)
-        loadPoster(binding.toolbarMoviePoster, movie?.backdrop, image_backdrop_size)
+        loadPoster(binding.toolbarMoviePoster, movie.backdrop, image_backdrop_size)
 
         val mainActivity = activity as MainActivity
-        mainActivity.supportActionBar!!.title = movie!!.title
+        mainActivity.supportActionBar!!.title = movie.title
         mainActivity.bottom_nav.visibility = View.GONE
 
         val db =
             Room.databaseBuilder(
                 activity!!.applicationContext,
-                FavouritesRoomDatabase::class.java,
+                FavoritesDatabase::class.java,
                 "favourite_movies_database"
             ).build()
-
-        //TODO Codigo para ir buscar todos os favoritos
-        /*mFavouritesViewModel.allFavourites.observe(this, object : Observer<List<Movie>> {
-            override fun onChanged(t: List<Movie>?) {
-
-            }
-        })*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_details, menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        if (isFavorite) {
-            menu.findItem(R.id.menu_favorite_on).isVisible = true
-            menu.findItem(R.id.menu_favorite_off).isVisible = false
-        } else {
-            menu.findItem(R.id.menu_favorite_off).isVisible = true
-            menu.findItem(R.id.menu_favorite_on).isVisible = false
-        }
+        var isFavorite: Boolean
+        mFavoritesViewModel.allFavourites.observe(this, Observer { movies ->
+            isFavorite = movies?.find { it.id.equals(movie.id) } != null
+            menu.findItem(R.id.menu_favorite_on).isVisible = isFavorite
+            menu.findItem(R.id.menu_favorite_off).isVisible = !isFavorite
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_favorite_off -> {
                 isFavorite = true
-                mFavouritesViewModel.insert(movie!!)
+                mFavoritesViewModel.insert(movie)
                 Toast.makeText(
                     activity,
                     getString(R.string.added_to_favorites),
@@ -101,7 +106,7 @@ class MovieDetailsFragment : Fragment() {
             }
             R.id.menu_favorite_on -> {
                 isFavorite = false
-                mFavouritesViewModel.delete(movie!!)
+                mFavoritesViewModel.delete(movie)
                 Toast.makeText(
                     activity,
                     getString(R.string.deleted_from_favorites),
@@ -122,13 +127,11 @@ class MovieDetailsFragment : Fragment() {
         binding.similarMoviesRv.layoutManager = layoutManager
 
         apiCall = ApiCall(binding)
-        apiCall.similarMovies(movie?.id)
+        apiCall.similarMovies(movie.id)
     }
 
     private fun setUpMovieView() {
-        //val args: MovieDetailsFragmentArgs by navArgs()
-        //movie = args.StringMovieIntent
-        binding.movieView = MovieViewModel()
+        binding.movieView = MoviesListViewModel()
         binding.movieView!!.movie = movie
     }
 }

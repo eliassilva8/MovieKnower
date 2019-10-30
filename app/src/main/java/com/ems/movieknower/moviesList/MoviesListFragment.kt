@@ -1,4 +1,4 @@
-package com.ems.movieknower
+package com.ems.movieknower.moviesList
 
 
 import android.annotation.SuppressLint
@@ -16,6 +16,8 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
+import com.ems.movieknower.MainActivity
+import com.ems.movieknower.R
 import com.ems.movieknower.data.ApiCall
 import com.ems.movieknower.data.apiKey
 import com.ems.movieknower.data.themoviedbKey
@@ -39,7 +41,10 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_movies_list, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_movies_list, container, false
+        )
         setHasOptionsMenu(true)
         systemLanguage = Locale.getDefault().language
         return binding.root

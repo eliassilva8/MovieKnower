@@ -3,22 +3,19 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/app_navigation"
-        app:startDestination="@id/movieListFragment">
+        app:startDestination="@+id/movieListFragment">
     <fragment
             android:id="@+id/movieListFragment"
-            android:name="com.ems.movieknower.MoviesListFragment"
+            android:name="com.ems.movieknower.moviesList.MoviesListFragment"
             android:label="MovieListFragment"
             tools:layout="@layout/fragment_movies_list">
-        <action
-                android:id="@+id/action_movieListFragment_to_movieDetailsFragment"
-                app:destination="@id/movieDetailsFragment" />
         <action
                 android:id="@+id/action_movieListFragment_to_preferencesFragment"
                 app:destination="@id/preferencesFragment" />
     </fragment>
     <fragment
             android:id="@+id/movieDetailsFragment"
-            android:name="com.ems.movieknower.MovieDetailsFragment"
+            android:name="com.ems.movieknower.movieDetails.MovieDetailsFragment"
             android:label="MovieDetailsFragment">
         <argument
                 android:name="@string/movie_intent"
@@ -37,4 +34,12 @@
             android:id="@+id/newsFragment"
             android:name="com.ems.movieknower.NewsFragment"
             android:label="NewsFragment" />
+    <fragment
+            android:id="@+id/favoriteMoviesFragment"
+            android:name="com.ems.movieknower.favoriteMovies.FavoriteMoviesFragment"
+            android:label="fragment_favorite_movies"
+            tools:layout="@layout/fragment_favorite_movies" />
+    <action
+            android:id="@+id/action_global_movieDetailsFragment"
+            app:destination="@+id/movieDetailsFragment" />
 </navigation>

@@ -2,7 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="movieView" type="com.ems.movieknower.data.MovieViewModel"/>
+
+        <variable
+                name="movieView"
+                type="com.ems.movieknower.data.MoviesListViewModel" />
+
+        <variable
+                name="favoritesViewModel"
+                type="com.ems.movieknower.favoriteMovies.FavoritesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

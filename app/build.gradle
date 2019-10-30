@@ -87,6 +87,7 @@ dependencies {
 
 // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.archLifecycleVersion"
+    //noinspection LifecycleAnnotationProcessorWithJava8
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.archLifecycleVersion"
     androidTestImplementation "androidx.arch.core:core-testing:$rootProject.androidxArchVersion"
 
@@ -100,10 +101,4 @@ dependencies {
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.version_navigation"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.version_navigation"
-}
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
 }
