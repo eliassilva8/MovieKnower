@@ -19,7 +19,7 @@
         <ImageView
                 android:id="@+id/toolbar_movie_poster"
                 android:layout_width="wrap_content"
-                android:layout_height="230dp"
+                android:layout_height="232dp"
                 app:layout_constraintBottom_toTopOf="@id/nestedScrollView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
                         android:drawablePadding="4dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@{movieView.movie.rating}"
-                        android:textSize="@dimen/text_body"
+                        android:textSize="@dimen/text_body_size"
                         app:layout_constraintEnd_toStartOf="@+id/guideline"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -68,7 +68,7 @@
                         android:drawablePadding="4dp"
                         android:gravity="center_vertical|center_horizontal"
                         android:text="@{movieView.movie.voteCounting}"
-                        android:textSize="@dimen/text_body"
+                        android:textSize="@dimen/text_body_size"
                         app:layout_constraintEnd_toStartOf="@+id/guideline2"
                         app:layout_constraintStart_toStartOf="@+id/guideline"
                         app:layout_constraintTop_toTopOf="@+id/movie_rating" />
@@ -84,7 +84,7 @@
                         android:gravity="center_vertical|center_horizontal"
                         android:maxLength="4"
                         android:text="@{movieView.movie.release}"
-                        android:textSize="@dimen/text_body"
+                        android:textSize="@dimen/text_body_size"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/guideline2"
                         app:layout_constraintTop_toTopOf="@+id/movie_vote_count" />
@@ -112,7 +112,7 @@
                         android:layout_marginEnd="16dp"
                         android:justificationMode="inter_word"
                         android:text="@{movieView.movie.synopsis}"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/text_body_size"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/movie_vote_count" />

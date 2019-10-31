@@ -10,12 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ems.movieknower.MainActivity
 import com.ems.movieknower.R
 import com.ems.movieknower.database.FavoritesDatabase
 import com.ems.movieknower.databinding.FragmentFavoriteMoviesBinding
 import com.ems.movieknower.moviesList.MoviesListAdapter
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.main_activity.*
 import java.util.*
 
 /**
@@ -57,6 +60,10 @@ class FavoriteMoviesFragment : Fragment() {
 
         mainActivity = activity as MainActivity
         mainActivity.supportActionBar!!.title = getString(R.string.favorites)
+
+        mainActivity.findViewById<BottomNavigationView>(R.id.bottom_nav)
+            .setupWithNavController(mainActivity.navController)
+        mainActivity.bottom_nav.visibility = View.VISIBLE
     }
 
     @SuppressLint("WrongConstant")
@@ -74,7 +81,12 @@ class FavoriteMoviesFragment : Fragment() {
     private fun setUpAdapter(favoritesViewModel: FavoritesViewModel) {
         val adapter = MoviesListAdapter(binding.moviesGrid.context)
         favoritesViewModel.allFavourites.observe(this, Observer { movies ->
-            movies?.let { adapter.setMovies(it) }
+            if (movies?.size != 0) {
+                movies!!.let { adapter.setMovies(it) }
+            } else {
+                binding.emptyFavoritesTv.visibility = View.VISIBLE
+                binding.moviesGrid.visibility = View.GONE
+            }
         })
         binding.moviesGrid.adapter = adapter
     }

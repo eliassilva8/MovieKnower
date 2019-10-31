@@ -18,4 +18,5 @@
     <string name="news">Notícias</string>
     <string name="home">Página Inicial</string>
     <string name="favorites">Favoritos</string>
+    <string name="empty_favorites">Sem favoritos adicionados</string>
 </resources>
