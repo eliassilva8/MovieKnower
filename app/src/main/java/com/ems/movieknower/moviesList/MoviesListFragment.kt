@@ -56,7 +56,6 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
 
         mainActivity = activity as MainActivity
         setUpRecyclerView(binding)
-        refreshMoviesData()
 
         mainActivity.findViewById<BottomNavigationView>(R.id.bottom_nav)
             .setupWithNavController(mainActivity.navController)
@@ -176,5 +175,15 @@ class MoviesListFragment : Fragment(), SharedPreferences.OnSharedPreferenceChang
         )
         binding.moviesGrid.layoutManager = layoutManager
         binding.moviesGrid.setHasFixedSize(true)
+
+        if (ApiCall.moviesList.isNullOrEmpty()) {
+            refreshMoviesData()
+        } else {
+            val adapter = MoviesListAdapter(binding.moviesGrid.context)
+            adapter.setMovies(ApiCall.moviesList!!)
+            binding.moviesGrid.adapter = adapter
+            binding.progressBar.visibility = View.GONE
+            binding.moviesGrid.visibility = View.VISIBLE
+        }
     }
 }

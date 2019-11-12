@@ -1,6 +1,7 @@
 package com.ems.movieknower.data
 
 import android.util.Log
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.ems.movieknower.BuildConfig
 import com.ems.movieknower.databinding.FragmentMovieDetailsBinding
@@ -17,6 +18,9 @@ val apiKey = "api_key"
 val movieService = ServiceBuilder().movieService()
 
 class ApiCall(val binding: ViewDataBinding) {
+    companion object {
+        var moviesList: List<Movie>? = null
+    }
 
     /**
      * Gets a list of movies by it name
@@ -61,9 +65,12 @@ class ApiCall(val binding: ViewDataBinding) {
             override fun onResponse(call: Call<Results>, response: Response<Results>) {
                 if (response.isSuccessful) {
                     if (binding is FragmentMoviesListBinding) {
+                        moviesList = response.body()!!.moviesResult
                         val adapter = MoviesListAdapter(binding.moviesGrid.context)
-                        adapter.setMovies(response.body()!!.moviesResult)
+                        adapter.setMovies(moviesList!!)
                         binding.moviesGrid.adapter = adapter
+                        binding.progressBar.visibility = View.GONE
+                        binding.moviesGrid.visibility = View.VISIBLE
                     } else if (binding is FragmentMovieDetailsBinding) {
                         val adapter =
                             SimilarMoviesAdapter(binding.similarMoviesRv.context, response.body()!!.moviesResult)

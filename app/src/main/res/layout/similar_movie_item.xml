@@ -1,42 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <import type="android.view.View"/>
-        <variable name="movie" type="com.ems.movieknower.data.Movie"/>
-        <variable name="onClickMovie" type="com.ems.movieknower.data.OnClickMovieHandler"/>
+
+        <import type="android.view.View" />
+
+        <variable
+                name="movie"
+                type="com.ems.movieknower.data.Movie" />
+
+        <variable
+                name="onClickMovie"
+                type="com.ems.movieknower.data.OnClickMovieHandler" />
     </data>
 
     <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_movie_details"
             android:layout_width="95dp"
             android:layout_height="140dp"
             android:layout_margin="3dp"
-            android:id="@+id/card_view_movie_details"
             android:onClick="@{(view) -> onClickMovie.onClickMovie(movie, view)}">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <TextView android:layout_width="28dp"
-                      android:layout_height="28dp"
-                      android:id="@+id/movie_rating"
-                      android:background="@drawable/rating_circle"
-                      android:textColor="#FFFFFF"
-                      android:gravity="center"
-                      android:text="@{movie.rating}" app:layout_constraintEnd_toEndOf="@+id/movies_poster"
-                      android:elevation="1dp" android:layout_marginEnd="4dp" android:layout_marginBottom="4dp"
-                      app:layout_constraintBottom_toBottomOf="@+id/movies_poster"/>
+            <TextView
+                    android:id="@+id/movie_rating"
+                    android:layout_width="@dimen/similar_movies_circle_size"
+                    android:layout_height="@dimen/similar_movies_circle_size"
+                    android:layout_marginEnd="@dimen/extra_small_margin"
+                    android:layout_marginBottom="@dimen/extra_small_margin"
+                    android:background="@drawable/rating_circle"
+                    android:elevation="1dp"
+                    android:text="@{movie.rating}"
+                    android:gravity="center"
+                    android:textColor="#FFFFFF"
+                    android:layout_alignBottom="@+id/movies_poster"
+                    android:layout_alignEnd="@id/movies_poster" />
 
             <ImageView
+                    android:id="@+id/movies_poster"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_launcher_background"
-                    android:id="@+id/movies_poster"
                     android:contentDescription="@string/movie_poster"
+                    android:src="@drawable/ic_launcher_background"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </layout>
